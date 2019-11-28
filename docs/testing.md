@@ -20,28 +20,44 @@ To execute the bats framework:
 
  * Using vagrant (after configuring vagrant according to this document):
 
-    vagrant up centos7-pipeline-bats
+```bash
+vagrant up centos7-foreman-bats-ci
+```
 
 To run the same setup run by CI system:
 
-    cp boxes.yaml.example boxes.yaml
-    vagrant up centos7-bats-ci
+```bash
+cp boxes.yaml.example boxes.yaml
+vagrant up centos7-foreman-bats-ci
+```
 
-If you are making changes to bats tests and want to test your updates, edit `centos7-bats-ci` to include:
+If you are making changes to bats tests and want to test your updates, edit `centos7-foreman-bats-ci` to include:
 
-    ansible:
-      ....
-      variables:
-        bats_forklift_dir: /vagrant
-        bats_update_forklift: "no"
+```yaml
+centos7-foreman-bats-ci:
+  box: centos7
+  ansible:
+    playbook: 'playbooks/bats_pipeline_foreman_nightly.yml'
+    group: 'bats'
+    # Add the following part
+    variables:
+      bats_forklift_dir: /vagrant
+      bats_update_forklift: "no"
+```
 
-Or if you want to run bats from a different repository or branch, edit `centos7-bats-ci` to include:
+Or if you want to run bats from a different repository or branch, edit `centos7-foreman-bats-ci` to include:
 
-    ansible:
-      ....
-      variables:
-        bats_forklift_repo: https://github.com/<YOUR_NAME>/forklift.git
-        bats_forklift_version: your-branch
+```yaml
+centos7-foreman-bats-ci:
+  box: centos7
+  ansible:
+    playbook: 'playbooks/bats_pipeline_foreman_nightly.yml'
+    group: 'bats'
+    # Add the following part
+    variables:
+      bats_forklift_repo: https://github.com/<YOUR_NAME>/forklift.git
+      bats_forklift_version: your-branch
+```
 
 ## Pipeline Testing
 
